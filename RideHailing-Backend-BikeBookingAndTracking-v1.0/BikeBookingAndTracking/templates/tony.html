@@ -1,0 +1,163 @@
+Sure, I'll ensure the entire form data is collected and prepared to be sent to the backend upon form submission. The key steps involve capturing all the form data, converting it into a format suitable for the backend, and sending it via an HTTP POST request using `fetch`.
+
+Here is the complete HTML file with embedded JavaScript to handle form submission:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ride Request</title>
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css" />
+</head>
+<body>
+  <h2>Backend Data</h2>
+  <form id="ride-request-form">
+    <!-- User Data Section -->
+    <div>
+      <h4>User Data</h4>
+      <input placeholder="Name" type="text" name="user_name" required />
+      <input placeholder="Phone Number" type="tel" name="user_phone" required />
+    </div>
+
+    <!-- User Location Section -->
+    <div>
+      <h4>User Location</h4>
+      <input placeholder="Longitude" type="text" name="user_longitude" required />
+      <input placeholder="Latitude" type="text" name="user_latitude" required />
+    </div>
+
+    <!-- Pick Up Location Section -->
+    <div>
+      <h4>Pick Up Location</h4>
+      <input placeholder="Longitude" type="text" name="pickup_longitude" required />
+      <input placeholder="Latitude" type="text" name="pickup_latitude" required />
+    </div>
+
+    <!-- Destination Section -->
+    <div>
+      <h4>Destination</h4>
+      <input placeholder="Longitude" type="text" name="destination_longitude" required />
+      <input placeholder="Latitude" type="text" name="destination_latitude" required />
+    </div>
+
+    <!-- Bike Type Section -->
+    <div>
+      <h4>Bike Type</h4>
+      <select name="bike_type" required>
+        <option value="standard">Standard</option>
+        <option value="electric">Electric</option>
+        <option value="cargo">Cargo</option>
+      </select>
+    </div>
+
+    <!-- Time Information Section -->
+    <div>
+      <h4>Time Information</h4>
+      <input placeholder="Travel Time (mins)" type="number" min="0" name="travel_time" required />
+      <input placeholder="Motorist ETA (mins)" type="number" min="0" name="eta_motorist" required />
+    </div>
+
+    <!-- Payment Method Section -->
+    <div>
+      <h4>Select Your Payment Method</h4>
+      <label>
+        <input type="radio" name="payment_method" value="wallet" required />
+        Wallet
+      </label>
+      <label>
+        <input type="radio" name="payment_method" value="mtn_mobile_money" />
+        MTN Mobile Money
+      </label>
+      <label>
+        <input type="radio" name="payment_method" value="airtel_money" />
+        Airtel Money
+      </label>
+      <label>
+        <input type="radio" name="payment_method" value="cash" />
+        Cash
+      </label>
+    </div>
+
+    <!-- Ride Status Section -->
+    <div>
+      <h4>Ride Status</h4>
+      <label>
+        <input type="radio" name="ride_status" value="requested" required />
+        Requested
+      </label>
+      <label>
+        <input type="radio" name="ride_status" value="accepted" />
+        Accepted
+      </label>
+      <label>
+        <input type="radio" name="ride_status" value="in_progress" />
+        In Progress
+      </label>
+      <label>
+        <input type="radio" name="ride_status" value="completed" />
+        Completed
+      </label>
+      <label>
+        <input type="radio" name="ride_status" value="cancelled" />
+        Cancelled
+      </label>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit">Submit Request</button>
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('ride-request-form');
+
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+          data[key] = value;
+        });
+
+        fetch('/submit-data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert('Success: ' + JSON.stringify(data));
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+```
+
+### Explanation
+
+1. **HTML Form**:
+   - Each section is clearly labeled for user data, locations, bike type, time information, payment method, and ride status.
+   - Form fields have `name` attributes for easy data collection.
+
+2. **JavaScript**:
+   - `DOMContentLoaded` ensures the script runs after the DOM is fully loaded.
+   - The `submit` event listener on the form prevents the default form submission.
+   - `FormData` collects all form data.
+   - A JavaScript object `data` is created from the `FormData` entries.
+   - `fetch` sends the data as a JSON object to the server with a POST request.
+   - Handles the response with success and error alerts for user feedback.
+
+This setup ensures that all form data is collected, converted into a JSON object, and sent to the backend seamlessly upon form submission.

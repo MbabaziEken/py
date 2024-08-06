@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Your Ride Requests</title>
+  </head>
+  <body>
+    <h1>Your Ride Requests</h1>
+    {% block content %}
+    <h2>Your Ride Requests</h2>
+    <ul>
+      {% for ride_request in ride_requests %}
+      <li>
+        Pickup: {{ ride_request.pickup_location }} - Dropoff: {{
+        ride_request.dropoff_location }}
+        <form
+          method="post"
+          action="{% url 'cancel_ride_request' ride_request.id %}"
+        >
+          {% csrf_token %}
+          <button type="submit">Cancel</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endblock %}
+  </body>
+</html>

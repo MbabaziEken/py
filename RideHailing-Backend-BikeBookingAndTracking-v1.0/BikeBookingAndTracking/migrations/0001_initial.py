@@ -123,7 +123,7 @@ class Migration(migrations.Migration):
                 ('ride', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='location', to='BikeBookingAndTracking.ride')),
             ],
             options={
-                'indexes': [models.Index(fields=['latitude', 'longitude'], name='BikeBooking_latitud_28032a_idx')],
+                'indexes': [models.Index(fields=['latitude', 'longitude'], name='BikeBooking_latitude_28032a_idx')],
             },
         ),
         migrations.AddIndex(
